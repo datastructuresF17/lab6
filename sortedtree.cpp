@@ -11,14 +11,14 @@
 using namespace std;
 
 // Function prototypes
-int fillList(shared_ptr<SortedListInterface<int>> listPtr);
-void displayList(shared_ptr<SortedListInterface<int>> listPtr);
+int fillList(shared_ptr<BinaryTreeInterface<int>> listPtr);
+void displayList(shared_ptr<BinaryTreeInterface<int>> listPtr);
 
 // Driver program
 int main() {
 
     srand(time(0));
-    shared_ptr<SortedListInterface<int>> listPtr;
+    shared_ptr<BinaryTreeInterface<int>> listPtr;
     listPtr = make_shared<BinarySearchTree<int>>();
 
     int lastEntry = fillList(listPtr);              // create list, return last entry
@@ -39,23 +39,23 @@ int main() {
 }
 
 // Function definitions
-void displayList(shared_ptr<SortedListInterface<int>> listPtr)
+void displayList(shared_ptr<BinaryTreeInterface<int>> listPtr)
 {
 	cout << "Contents of sorted list: " << endl;
-   for (int i = 1; i <= listPtr->getLength(); i++)
+   for (int i = 1; i <= listPtr->getNumberOfNodes(); i++)
    {
       cout << listPtr->getEntry(i) << "-";
    }
 	cout << endl << endl;
 }
 
-int fillList(shared_ptr<SortedListInterface<int>> listPtr)
+int fillList(shared_ptr<BinaryTreeInterface<int>> listPtr)
 {
     int randInt = 0;
 
     for (int i = 0; i < 21; i++) {
         randInt = rand() % 100 + 1;
-        listPtr->insertSorted(randInt);
+        listPtr->add(randInt);
     }
-    return listPtr->getPosition(randInt);
+    return listPtr->getNumberOfNodes(randInt);
 }

@@ -55,6 +55,7 @@ auto BinarySearchTree<ItemType>::removeNode(shared_ptr<BinaryNode<ItemType>> nod
         return (nodePtr = nullptr);
     else if (nodePtr->getLeftChildPtr() == nullptr)
     */
+    return nodePtr;
 }
 
 template<class ItemType>

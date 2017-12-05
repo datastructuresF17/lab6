@@ -70,7 +70,7 @@ public:
    int getNumberOfNodes() const;
 
    ItemType getRootData() const throw(PrecondViolatedExcep);
-   void setRootData(const ItemType& newData);
+   void setRootData(const ItemType& newData) const throw(PrecondViolatedExcep);
 
    bool add(const ItemType& newEntry);
    bool remove(const ItemType& target);
