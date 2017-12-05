@@ -1,8 +1,8 @@
-output: ch16-binaryNodeTree-driver.o
-	g++ ch16-binaryNodeTree-driver.o -o run
+output: sortedtree.o
+	g++ sortedtree.o -o run
 
-ch16-binaryNodeTree-driver.o: ch16-binaryNodeTree-driver.cpp
-	g++ -c -std=c++14 ch16-binaryNodeTree-driver.cpp
+sortedtree.o: sortedtree.cpp
+	g++ -c -std=c++14 sortedtree.cpp
 
 clean:
 	rm *.o run
