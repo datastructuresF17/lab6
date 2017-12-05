@@ -13,7 +13,7 @@
 #include "BinaryNode.h"
 #include "BinaryNodeTree.h"
 #include "NotFoundException.h"
-#include "PrecondViolatedExcept.h"
+#include "PrecondViolatedExcep.h"
 #include <memory>
 
 template<class ItemType>
