@@ -161,4 +161,44 @@ void BinarySearchTree<ItemType>::clear()
     rootPtr = nullptr;
 }
 
-// CONTINUE WITH getEntry() DEFINITION HERE //
+template<class ItemType>
+ItemType BinarySearchTree<ItemType>::getEntry(const ItemType& anEntry) const throw(NotFoundException)   // CONTINUE WITH getEntry() DEFINITION HERE //
+{
+    // Define node
+    // Check if node is nullptr
+    // If it is null, throw NotFoundException "Entry not in the tree"
+    // Else, return node->getItem()
+}
+
+template<class ItemType>
+bool BinarySearchTree<ItemType>::contains(const ItemType& anEntry) const
+{
+    return findNode(rootPtr, anEntry);
+}
+
+template<class ItemType>
+void BinarySearchTree<ItemType>::preorderTraverse(void visit(ItemType&)) const
+{
+    this->preorder(visit, rootPtr);
+}
+
+template<class ItemType>
+void BinarySearchTree<ItemType>::inorderTraverse(void visit(ItemType&)) const
+{
+    this->inorder(visit, rootPtr);
+}
+
+template<class ItemType>
+void BinarySearchTree<ItemType>::postorderTraverse(void visit(ItemType&)) const
+{
+    this->postorder(visit, rootPtr);
+}
+
+template<class ItemType>
+BinarySearchTree& BinarySearchTree<ItemType>::operator=(const BinarySearchTree& rightHandSide)      //Defined right?
+{
+    if (!isEmpty())
+        clear();
+    this = copyTree(&rightHandSide);
+    return *this;
+}
