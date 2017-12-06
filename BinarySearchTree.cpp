@@ -146,7 +146,9 @@ void BinarySearchTree<ItemType>::setRootData(const ItemType& newData) const thro
 template<class ItemType>                                                        // RETURN TO COMPLETE
 bool BinarySearchTree<ItemType>::add(const ItemType& newEntry)
 {
-
+    // Define a new node (Smart pointer to BinaryNode(newEntry))
+    // rootPtr = insertfunction(rootPtr, <new node>)
+    // return true;
 }
 
 template<class ItemType>
