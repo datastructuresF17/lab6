@@ -8,43 +8,49 @@ template<class ItemType>
 auto BinarySearchTree<ItemType>::placeNode(shared_ptr<BinaryNode<ItemType>> subTreePtr,
                                             shared_ptr<BinaryNode<ItemType>> newNodePtr)
 {
+    shared_ptr<BinaryNode<ItemType>> tempPtr;
+
     if (subTreePtr == nullptr)                                                                      // If tree is empty
         return newNodePtr;
+    else if (subTreePtr->getItem() > newNodePtr->getItem())
+    {
+        tempPtr = placeNode(subTreePtr->getLeftChildPtr(), newNodePtr);
+        subTreePtr->setLeftChildPtr(tempPtr);
+    }
     else
     {
-        if (subTreePtr->getItem() > newNodePtr->getItem())                                          // If new node is greater
-            subTreePtr->setLeftChildPtr(placeNode(subTreePtr->getLeftChildPtr(), newNodePtr));
-        else                                                                                        // If new node is less than
-            subTreePtr->setRightChildPtr(placeNode(subTreePtr->getRightChildPtr(), newNodePtr));
-
-    return subTreePtr;
+        tempPtr = placeNode(subTreePtr->getRightChildPtr(), newNodePtr);
+        subTreePtr->setRightChildPtr(tempPtr);
     }
+    return subTreePtr;
 }
 
 template<class ItemType>
 auto BinarySearchTree<ItemType>::removeValue(shared_ptr<BinaryNode<ItemType>> subTreePtr,
                                                 const ItemType target, bool& isSuccessful)
 {
+    shared_ptr<BinaryNode<ItemType>> tempPtr;
+
     if (subTreePtr == nullptr)
     {
         isSuccessful = false;
-        return nullptr;
     }
-    if (subTreePtr->getItem() == target)
+    else if (subTreePtr->getItem() == target)
     {
         subTreePtr = removeNode(subTreePtr);
         isSuccessful = true;
-        return subTreePtr;
+    }
+    else if (subTreePtr->getItem() > target)
+    {
+        tempPtr = removeValue(subTreePtr->getLeftChildPtr(), target, isSuccessful);
+        subTreePtr->setLeftChildPtr(tempPtr);
     }
     else
     {
-        if (subTreePtr->getItem() > target)
-            subTreePtr->setLeftChildPtr(removeValue(subTreePtr->getLeftChildPtr(), target, isSuccessful));
-        else
-            subTreePtr->setRightChildPtr(removeValue(subTreePtr->getRightChildPtr(), target, isSuccessful));
-    return subTreePtr;
-
+        tempPtr = removeValue(subTreePtr->getRightChildPtr(), target, isSuccessful);
+        subTreePtr->setRightChildPtr(tempPtr);
     }
+    return subTreePtr;
 }
 
 template<class ItemType>                                                                            // RETURN TO FINISH
@@ -59,17 +65,20 @@ auto BinarySearchTree<ItemType>::removeNode(shared_ptr<BinaryNode<ItemType>> nod
 }
 
 template<class ItemType>
-auto BinarySearchTree<ItemType>::removeLeftmostNode(shared_ptr<BinaryNode<ItemType>> subTreePtr, ItemType& inorderSuccessor)
+auto BinarySearchTree<ItemType>::removeLeftmostNode(shared_ptr<BinaryNode<ItemType>> nodePtr, ItemType& inorderSuccessor)
 {
-    if (subTreePtr->getLeftChildPtr() == nullptr)          // Only has right child
+    shared_ptr<BinaryNode<ItemType>> tempPtr;
+    
+    if (nodePtr->getLeftChildPtr() == nullptr)          // Only has right child
     {
-        inorderSuccessor = subTreePtr->getItem();
-        return removeNode(subTreePtr);
+        inorderSuccessor = nodePtr->getItem();
+        return removeNode(nodePtr);
     }
     else                                                // Only has left child
     {
-        subTreePtr->setLeftChildPtr(removeLeftmostNode(subTreePtr->getLeftChildPtr(), inorderSuccessor));
-        return subTreePtr;
+        tempPtr = removeLeftmostNode(nodePtr->getLeftChildPtr(), inorderSuccessor);
+        nodePtr->setLeftChildPtr(tempPtr);
+        return nodePtr;
     }
 }
 
