@@ -168,9 +168,9 @@ void BinarySearchTree<ItemType>::setRootData(const ItemType& newData) const thro
 template<class ItemType>                                                        // RETURN TO COMPLETE
 bool BinarySearchTree<ItemType>::add(const ItemType& newEntry)
 {
-    // Define a new node (Smart pointer to BinaryNode(newEntry))
-    // rootPtr = insertfunction(rootPtr, <new node>)
-    // return true;
+    auto newNodePtr = make_shared<BinaryNode<ItemType>>(newEntry);
+    balancedAdd(rootPtr, newNodePtr);
+    return true;
 }
 
 template<class ItemType>
@@ -191,10 +191,13 @@ void BinarySearchTree<ItemType>::clear()
 template<class ItemType>
 ItemType BinarySearchTree<ItemType>::getEntry(const ItemType& anEntry) const throw(NotFoundException)   // CONTINUE WITH getEntry() DEFINITION HERE //
 {
-    // Define node
-    // Check if node is nullptr
-    // If it is null, throw NotFoundException "Entry not in the tree"
-    // Else, return node->getItem()
+    bool isSuccessful = false;
+    auto binaryNodePtr = findNode(rootPtr, anEntry, isSuccessful);
+
+    if (isSuccessful)
+        return binaryNodePtr->getItem();
+    else
+        throw NotFoundException("Entry was not found in the tree");
 }
 
 template<class ItemType>
