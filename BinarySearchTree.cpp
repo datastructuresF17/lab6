@@ -56,19 +56,32 @@ auto BinarySearchTree<ItemType>::removeValue(shared_ptr<BinaryNode<ItemType>> su
 template<class ItemType>                                                                            // RETURN TO FINISH
 auto BinarySearchTree<ItemType>::removeNode(shared_ptr<BinaryNode<ItemType>> nodePtr)
 {
-    /*
-    if (nodePtr->isLeaf())
-        return (nodePtr = nullptr);
-    else if (nodePtr->getLeftChildPtr() == nullptr)
-    */
-    return nodePtr;
+    if (nodePtr->getLeftChildPtr() == nullptr && nodePtr->getRightChildPtr() == nullptr)
+        return nodePtr;
+    else if ((nodePtr->getLeftChildPtr() != nullptr) != (nodePtr->getRightChildPtr() != nullptr))
+    {
+        shared_ptr<BinaryNode<ItemType>> nodeToConnectPtr = nullptr;
+
+        if (nodePtr->getLeftChildPtr() != nullptr)
+            nodeToConnectPtr = nodePtr->getLeftChildPtr();
+        else
+            nodeToConnectPtr = nodePtr->getRightChildPtr();
+        return nodeToConnectPtr;
+    }
+    else
+    {
+        tempPtr = removeLeftmostNode(nodePtr->getRightChildPtr(), nodePtr->getItem());
+        nodePtr->setRightChildPtr(tempPtr);
+        nodePtr->setItem(nodePtr->getItem());
+        return nodePtr;
+    }
 }
 
 template<class ItemType>
 auto BinarySearchTree<ItemType>::removeLeftmostNode(shared_ptr<BinaryNode<ItemType>> nodePtr, ItemType& inorderSuccessor)
 {
     shared_ptr<BinaryNode<ItemType>> tempPtr;
-    
+
     if (nodePtr->getLeftChildPtr() == nullptr)          // Only has right child
     {
         inorderSuccessor = nodePtr->getItem();
