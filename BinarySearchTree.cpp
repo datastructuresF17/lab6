@@ -1,4 +1,5 @@
 #include "BinarySearchTree.h"
+#include "BinaryNodeTree.h"
 #include "BinaryNode.h"
 #include <memory>
 #include <iostream>
@@ -6,27 +7,27 @@ using namespace std;
 
 template<class ItemType>
 auto BinarySearchTree<ItemType>::placeNode(shared_ptr<BinaryNode<ItemType>> subTreePtr,
-                                            shared_ptr<BinaryNode<ItemType>> newNodePtr)
+                                            shared_ptr<BinaryNode<ItemType>> newNode)
 {
     shared_ptr<BinaryNode<ItemType>> tempPtr;
 
     if (subTreePtr == nullptr)                                                                      // If tree is empty
-        return newNodePtr;
-    else if (subTreePtr->getItem() > newNodePtr->getItem())
+        return newNode;
+    else if (subTreePtr->getItem() > newNode->getItem())
     {
-        tempPtr = placeNode(subTreePtr->getLeftChildPtr(), newNodePtr);
+        tempPtr = placeNode(subTreePtr->getLeftChildPtr(), newNode);
         subTreePtr->setLeftChildPtr(tempPtr);
     }
     else
     {
-        tempPtr = placeNode(subTreePtr->getRightChildPtr(), newNodePtr);
+        tempPtr = placeNode(subTreePtr->getRightChildPtr(), newNode);
         subTreePtr->setRightChildPtr(tempPtr);
     }
     return subTreePtr;
 }
 
 template<class ItemType>
-auto BinarySearchTree<ItemType>::removeValue(shared_ptr<BinaryNode<ItemType>> subTreePtr,
+auto BinarySearchTree<ItemType>::removeValue(shared_ptr<BinaryNode<ItemType>> subTreePtr,           // shared_ptr return type?
                                                 const ItemType target, bool& isSuccessful)
 {
     shared_ptr<BinaryNode<ItemType>> tempPtr;
@@ -42,20 +43,22 @@ auto BinarySearchTree<ItemType>::removeValue(shared_ptr<BinaryNode<ItemType>> su
     }
     else if (subTreePtr->getItem() > target)
     {
-        tempPtr = removeValue(subTreePtr->getLeftChildPtr(), target, isSuccessful);
+        auto tempPtr = removeValue(subTreePtr->getLeftChildPtr(), target, isSuccessful);
         subTreePtr->setLeftChildPtr(tempPtr);
     }
     else
     {
-        tempPtr = removeValue(subTreePtr->getRightChildPtr(), target, isSuccessful);
+        auto tempPtr = removeValue(subTreePtr->getRightChildPtr(), target, isSuccessful);
         subTreePtr->setRightChildPtr(tempPtr);
     }
     return subTreePtr;
 }
 
-template<class ItemType>                                                                            // RETURN TO FINISH
+template<class ItemType>
 auto BinarySearchTree<ItemType>::removeNode(shared_ptr<BinaryNode<ItemType>> nodePtr)
 {
+    shared_ptr<BinaryNode<ItemType>> tempPtr;
+
     if (nodePtr->getLeftChildPtr() == nullptr && nodePtr->getRightChildPtr() == nullptr)
         return nodePtr;
     else if ((nodePtr->getLeftChildPtr() != nullptr) != (nodePtr->getRightChildPtr() != nullptr))
@@ -70,7 +73,7 @@ auto BinarySearchTree<ItemType>::removeNode(shared_ptr<BinaryNode<ItemType>> nod
     }
     else
     {
-        tempPtr = removeLeftmostNode(nodePtr->getRightChildPtr(), nodePtr->getItem());
+        auto tempPtr = removeLeftmostNode(nodePtr->getRightChildPtr(), nodePtr->getItem());
         nodePtr->setRightChildPtr(tempPtr);
         nodePtr->setItem(nodePtr->getItem());
         return nodePtr;
@@ -78,34 +81,38 @@ auto BinarySearchTree<ItemType>::removeNode(shared_ptr<BinaryNode<ItemType>> nod
 }
 
 template<class ItemType>
-auto BinarySearchTree<ItemType>::removeLeftmostNode(shared_ptr<BinaryNode<ItemType>> nodePtr, ItemType& inorderSuccessor)
+auto BinarySearchTree<ItemType>::removeLeftmostNode(shared_ptr<BinaryNode<ItemType>> subTreePtr, ItemType& inorderSuccessor)        // check smart pointer definition
 {
     shared_ptr<BinaryNode<ItemType>> tempPtr;
 
-    if (nodePtr->getLeftChildPtr() == nullptr)          // Only has right child
+    if (subTreePtr->getLeftChildPtr() == nullptr)          // Only has right child
     {
-        inorderSuccessor = nodePtr->getItem();
-        return removeNode(nodePtr);
+        inorderSuccessor = subTreePtr->getItem();
+        return removeNode(subTreePtr);
     }
     else                                                // Only has left child
     {
-        tempPtr = removeLeftmostNode(nodePtr->getLeftChildPtr(), inorderSuccessor);
-        nodePtr->setLeftChildPtr(tempPtr);
-        return nodePtr;
+        auto tempPtr = removeLeftmostNode(subTreePtr->getLeftChildPtr(), inorderSuccessor);
+        subTreePtr->setLeftChildPtr(tempPtr);
+        return subTreePtr;
     }
 }
 
 template<class ItemType>
-auto BinarySearchTree<ItemType>::findNode(shared_ptr<BinaryNode<ItemType>> treePtr, const ItemType& target) const
+auto BinarySearchTree<ItemType>::findNode(shared_ptr<BinaryNode<ItemType>> treePtr,
+                                          const ItemType& target, bool& isSuccessful) const                     //shared_ptr return type?
 {
-    if (treePtr == nullptr)                                      // If nullptr, return nullptr
+    if (treePtr == nullptr)                                                 // If nullptr, return nullptr
         return nullptr;
-    else if (treePtr->getItem() == target)                       // If found, return subTreePtr
+    else if (treePtr->getItem() == target)                                  // If found, return subTreePtr
+    {
+        isSuccessful = true;
         return treePtr;
-    else if (treePtr->getItem() > target)                        // If target is smaller, search left
-        return findNode(treePtr->getLeftChildPtr(), target);
-    else                                                            // If target is bigger, search right
-        return findNode(treePtr->getRightChildPtr(), target);
+    }
+    else if (treePtr->getItem() > target)                                   // If target is smaller, search left
+        return findNode(treePtr->getLeftChildPtr(), target, isSuccessful);
+    else                                                                    // If target is bigger, search right
+        return findNode(treePtr->getRightChildPtr(), target, isSuccessful);
 }
 
 //////////////////////// CONSTRUCTORS ///////////////////////////////
@@ -223,7 +230,7 @@ void BinarySearchTree<ItemType>::postorderTraverse(void visit(ItemType&)) const
 {
     this->postorder(visit, rootPtr);
 }
-
+/*
 template<class ItemType>
 BinarySearchTree& BinarySearchTree<ItemType>::operator=(const BinarySearchTree& rightHandSide)      //Defined right?
 {
@@ -232,3 +239,4 @@ BinarySearchTree& BinarySearchTree<ItemType>::operator=(const BinarySearchTree& 
     this = copyTree(&rightHandSide);
     return *this;
 }
+*/

@@ -51,7 +51,7 @@ protected:
    // Returns a pointer to the node containing the given value,
    // or nullptr if not found.
    auto findNode(std::shared_ptr<BinaryNode<ItemType>> treePtr,
-                 const ItemType& target) const;
+                 const ItemType& target, bool& isSuccessful) const;             // ADDED bool argument isSuccessful
 
 public:
    //------------------------------------------------------------
