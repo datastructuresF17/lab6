@@ -121,10 +121,9 @@ template<class ItemType>                                            // Default c
 BinarySearchTree<ItemType>::BinarySearchTree() { }
 
 template<class ItemType>
-BinarySearchTree<ItemType>::BinarySearchTree(const ItemType& rootItem)
-{
-    rootPtr = BinaryNode(rootItem, nullptr, nullptr);
-}
+BinarySearchTree<ItemType>::BinarySearchTree(const ItemType& rootItem)                                  // cross-check header file
+                        :rootPtr(make_shared<BinaryNode<ItemType>>(rootItem, nullptr, nullptr) { }
+
 
 template<class ItemType>
 BinarySearchTree<ItemType>::BinarySearchTree(const BinarySearchTree<ItemType>& tree)
@@ -163,16 +162,20 @@ ItemType BinarySearchTree<ItemType>::getRootData() const throw(PrecondViolatedEx
 {
     if (isEmpty())
         throw PrecondViolatedExcep("ERROR: getRootData() called while tree is empty");
-    return rootPtr->getItem();
+    return this->rootPtr->getItem();
 }
 
 template<class ItemType>
-void BinarySearchTree<ItemType>::setRootData(const ItemType& newData) const throw(PrecondViolatedExcep)
+void BinarySearchTree<ItemType>::setRootData(const ItemType& newData) const throw(PrecondViolatedExcep)     // throw() needed?
 {
-    throw PrecondViolatedExcep("ERROR: Attempted change of root value in BST");
+    if (isEmpty())
+        this->rootPtr = make_shared<BinaryNode<ItemType>>(newData, nullptr, nullptr);
+    else
+        this->rootPtr->setItem(newData);
+    //throw PrecondViolatedExcep("ERROR: Attempted change of root value in BST");
 }
 
-template<class ItemType>                                                        // RETURN TO COMPLETE
+template<class ItemType>
 bool BinarySearchTree<ItemType>::add(const ItemType& newEntry)
 {
     auto newNodePtr = make_shared<BinaryNode<ItemType>>(newEntry);
@@ -192,7 +195,7 @@ template<class ItemType>
 void BinarySearchTree<ItemType>::clear()
 {
     this->destroyTree(rootPtr);
-    rootPtr = nullptr;
+    this->rootPtr.reset();
 }
 
 template<class ItemType>
@@ -210,7 +213,9 @@ ItemType BinarySearchTree<ItemType>::getEntry(const ItemType& anEntry) const thr
 template<class ItemType>
 bool BinarySearchTree<ItemType>::contains(const ItemType& anEntry) const
 {
-    return findNode(rootPtr, anEntry);
+    bool isSuccessful = false;
+    findNode(rootPtr, anEntry, isSuccessful);
+    return isSuccessful;
 }
 
 template<class ItemType>
