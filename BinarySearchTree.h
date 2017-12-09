@@ -34,7 +34,7 @@ protected:
 
    // Removes the given target value from the tree while maintaining a
    // binary search tree.
-   auto removeValue(std::shared_ptr<BinaryNode<ItemType>> subTreePtr,
+   std::shared_ptr<BinaryNode<ItemType>> removeValue(std::shared_ptr<BinaryNode<ItemType>> subTreePtr,
                     const ItemType target,
                     bool& isSuccessful) override;
 
@@ -46,11 +46,11 @@ protected:
    // Sets inorderSuccessor to the value in this node.
    // Returns a pointer to the revised subtree.
    auto removeLeftmostNode(std::shared_ptr<BinaryNode<ItemType>>subTreePtr,
-                           ItemType& inorderSuccessor);
+                           ItemType inorderSuccessor);
 
    // Returns a pointer to the node containing the given value,
    // or nullptr if not found.
-   auto findNode(std::shared_ptr<BinaryNode<ItemType>> treePtr,
+   std::shared_ptr<BinaryNode<ItemType>> findNode(std::shared_ptr<BinaryNode<ItemType>> treePtr,
                  const ItemType& target, bool& isSuccessful) const;             // ADDED bool argument isSuccessful
 
 public:
@@ -65,26 +65,26 @@ public:
    //------------------------------------------------------------
    // Public Methods Section.
    //------------------------------------------------------------
-   bool isEmpty() const;
-   int getHeight() const;
-   int getNumberOfNodes() const;
+   bool isEmpty() const override;
+   int getHeight() const override;
+   int getNumberOfNodes() const override;
 
-   ItemType getRootData() const throw(PrecondViolatedExcep);
+   ItemType getRootData() const throw(PrecondViolatedExcep) override;
    void setRootData(const ItemType& newData) const throw(PrecondViolatedExcep);
 
-   bool add(const ItemType& newEntry);
-   bool remove(const ItemType& target);
-   void clear();
+   bool add(const ItemType& newEntry) override;
+   bool remove(const ItemType& target) override;
+   void clear() override;
 
-   ItemType getEntry(const ItemType& anEntry) const throw(NotFoundException);
-   bool contains(const ItemType& anEntry) const;
+   ItemType getEntry(const ItemType& anEntry) const throw(NotFoundException) override;
+   bool contains(const ItemType& anEntry) const override;
 
    //------------------------------------------------------------
    // Public Traversals Section.
    //------------------------------------------------------------
-   void preorderTraverse(void visit(ItemType&)) const;
-   void inorderTraverse(void visit(ItemType&)) const;
-   void postorderTraverse(void visit(ItemType&)) const;
+   void preorderTraverse(void visit(ItemType&)) const override;
+   void inorderTraverse(void visit(ItemType&)) const override;
+   void postorderTraverse(void visit(ItemType&)) const override;
 
    //------------------------------------------------------------
    // Overloaded Operator Section.

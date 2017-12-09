@@ -7,55 +7,50 @@
 #include<memory>
 #include<cstdlib>       // srand and rand
 #include<ctime>         // time "seed"
+#include<vector>
 #include "BinarySearchTree.h"
 using namespace std;
 
+vector<int> sortedTree;                 // Vector to store tree integers
+
 // Function prototypes
-int fillList(shared_ptr<BinaryTreeInterface<int>> listPtr);
-void displayList(shared_ptr<BinaryTreeInterface<int>> listPtr);
+void display(int& num);
 
 // Driver program
 int main() {
 
     srand(time(0));
-    shared_ptr<BinaryTreeInterface<int>> listPtr;
-    listPtr = make_shared<BinarySearchTree<int>>();
 
-    int lastEntry = fillList(listPtr);              // create list, return last entry
+    BinarySearchTree<int> tree;         // Create a tree object
 
-    displayList(listPtr);                           // display the list
+    int num = 0;
+    cout << "\nRandom numbers added to tree in this order: ";
+    for (int index = 0; index < 22; index++) {
+        num = rand() % 100 + 1;
+        cout << num << ", ";
+        tree.add(num);
+    }
+    cout << endl;
 
-    cout << "Last number added: "
-         << listPtr->getEntry(lastEntry)
-         << " at position " << lastEntry << endl;
 
-    cout << "Deleting last entry added to list... ";
-    listPtr->remove(lastEntry);                     // delete last entry
-    cout << "done." << endl << endl;
 
-    displayList(listPtr);                           // display list again
+
+    cout << "Retrieving last number from tree: ";
+    cout << tree.getEntry(num) << endl << endl;
+
+    cout << "Removing last number from tree... ";
+    tree.remove(num);
+    cout << "done.\n\n";
+
+    cout << "Displaying tree with inorderTraverse(): ";
+    tree.inorderTraverse(display);
+    cout << endl << endl;
 
     return 0;
 }
 
 // Function definitions
-void displayList(shared_ptr<BinaryTreeInterface<int>> listPtr)
-{
-	cout << "Contents of sorted list: " << endl;
-   for (int i = 1; i <= listPtr->getNumberOfNodes(); i++)
-   {
-      cout << listPtr->getEntry(i) << "-";
-   }
-	cout << endl << endl;
-}
-
-int fillList(shared_ptr<BinaryTreeInterface<int>> listPtr)
-{
-    int randInt = 0;
-
-    for (int i = 0; i < 21; i++) {
-        randInt = rand() % 100 + 1;
-        listPtr->add(randInt);
-    }
-    return listPtr->getNumberOfNodes(randInt);
+void display(int& num) {
+    cout << num << ", ";
+    sortedTree.push_back(num);
 }

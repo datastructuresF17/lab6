@@ -27,7 +27,7 @@ auto BinarySearchTree<ItemType>::placeNode(shared_ptr<BinaryNode<ItemType>> subT
 }
 
 template<class ItemType>
-auto BinarySearchTree<ItemType>::removeValue(shared_ptr<BinaryNode<ItemType>> subTreePtr,           // shared_ptr return type?
+shared_ptr<BinaryNode<ItemType>> BinarySearchTree<ItemType>::removeValue(shared_ptr<BinaryNode<ItemType>> subTreePtr,
                                                 const ItemType target, bool& isSuccessful)
 {
     shared_ptr<BinaryNode<ItemType>> tempPtr;
@@ -57,18 +57,25 @@ auto BinarySearchTree<ItemType>::removeValue(shared_ptr<BinaryNode<ItemType>> su
 template<class ItemType>
 auto BinarySearchTree<ItemType>::removeNode(shared_ptr<BinaryNode<ItemType>> nodePtr)
 {
-    shared_ptr<BinaryNode<ItemType>> tempPtr;
+    // shared_ptr<BinaryNode<ItemType>> tempPtr;
 
-    if (nodePtr->getLeftChildPtr() == nullptr && nodePtr->getRightChildPtr() == nullptr)
+    if (nodePtr->getLeftChildPtr() == nullptr || nodePtr->getRightChildPtr() == nullptr)
+    {
+        nodePtr = nullptr;
         return nodePtr;
+    }
     else if ((nodePtr->getLeftChildPtr() != nullptr) != (nodePtr->getRightChildPtr() != nullptr))
     {
         shared_ptr<BinaryNode<ItemType>> nodeToConnectPtr = nullptr;
 
         if (nodePtr->getLeftChildPtr() != nullptr)
+        {
             nodeToConnectPtr = nodePtr->getLeftChildPtr();
+        }
         else
+        {
             nodeToConnectPtr = nodePtr->getRightChildPtr();
+        }
         return nodeToConnectPtr;
     }
     else
@@ -81,9 +88,9 @@ auto BinarySearchTree<ItemType>::removeNode(shared_ptr<BinaryNode<ItemType>> nod
 }
 
 template<class ItemType>
-auto BinarySearchTree<ItemType>::removeLeftmostNode(shared_ptr<BinaryNode<ItemType>> subTreePtr, ItemType& inorderSuccessor)        // check smart pointer definition
+auto BinarySearchTree<ItemType>::removeLeftmostNode(shared_ptr<BinaryNode<ItemType>> subTreePtr, ItemType inorderSuccessor)        // check smart pointer definition
 {
-    shared_ptr<BinaryNode<ItemType>> tempPtr;
+    // shared_ptr<BinaryNode<ItemType>> tempPtr;
 
     if (subTreePtr->getLeftChildPtr() == nullptr)          // Only has right child
     {
@@ -99,8 +106,8 @@ auto BinarySearchTree<ItemType>::removeLeftmostNode(shared_ptr<BinaryNode<ItemTy
 }
 
 template<class ItemType>
-auto BinarySearchTree<ItemType>::findNode(shared_ptr<BinaryNode<ItemType>> treePtr,
-                                          const ItemType& target, bool& isSuccessful) const                     //shared_ptr return type?
+shared_ptr<BinaryNode<ItemType>> BinarySearchTree<ItemType>::findNode(shared_ptr<BinaryNode<ItemType>> treePtr,
+                                          const ItemType& target, bool& isSuccessful) const
 {
     if (treePtr == nullptr)                                                 // If nullptr, return nullptr
         return nullptr;
@@ -122,7 +129,7 @@ BinarySearchTree<ItemType>::BinarySearchTree() { }
 
 template<class ItemType>
 BinarySearchTree<ItemType>::BinarySearchTree(const ItemType& rootItem)                                  // cross-check header file
-                        :rootPtr(make_shared<BinaryNode<ItemType>>(rootItem, nullptr, nullptr) { }
+                        :rootPtr(make_shared<BinaryNode<ItemType>>(rootItem, nullptr, nullptr)) { }
 
 
 template<class ItemType>
@@ -179,7 +186,7 @@ template<class ItemType>
 bool BinarySearchTree<ItemType>::add(const ItemType& newEntry)
 {
     auto newNodePtr = make_shared<BinaryNode<ItemType>>(newEntry);
-    balancedAdd(rootPtr, newNodePtr);
+    rootPtr = placeNode(rootPtr, newNodePtr);                                   //balancedAdd(rootPtr, newNodePtr);
     return true;
 }
 
