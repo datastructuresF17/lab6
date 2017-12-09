@@ -88,7 +88,7 @@ auto BinarySearchTree<ItemType>::removeNode(shared_ptr<BinaryNode<ItemType>> nod
 }
 
 template<class ItemType>
-auto BinarySearchTree<ItemType>::removeLeftmostNode(shared_ptr<BinaryNode<ItemType>> subTreePtr, ItemType inorderSuccessor)        // check smart pointer definition
+auto BinarySearchTree<ItemType>::removeLeftmostNode(shared_ptr<BinaryNode<ItemType>> subTreePtr, ItemType inorderSuccessor)
 {
     // shared_ptr<BinaryNode<ItemType>> tempPtr;
 
@@ -128,7 +128,7 @@ template<class ItemType>                                            // Default c
 BinarySearchTree<ItemType>::BinarySearchTree() { }
 
 template<class ItemType>
-BinarySearchTree<ItemType>::BinarySearchTree(const ItemType& rootItem)                                  // cross-check header file
+BinarySearchTree<ItemType>::BinarySearchTree(const ItemType& rootItem)
                         :rootPtr(make_shared<BinaryNode<ItemType>>(rootItem, nullptr, nullptr)) { }
 
 
@@ -173,7 +173,7 @@ ItemType BinarySearchTree<ItemType>::getRootData() const throw(PrecondViolatedEx
 }
 
 template<class ItemType>
-void BinarySearchTree<ItemType>::setRootData(const ItemType& newData) const throw(PrecondViolatedExcep)     // throw() needed?
+void BinarySearchTree<ItemType>::setRootData(const ItemType& newData) const throw(PrecondViolatedExcep)
 {
     if (isEmpty())
         this->rootPtr = make_shared<BinaryNode<ItemType>>(newData, nullptr, nullptr);
@@ -186,7 +186,7 @@ template<class ItemType>
 bool BinarySearchTree<ItemType>::add(const ItemType& newEntry)
 {
     auto newNodePtr = make_shared<BinaryNode<ItemType>>(newEntry);
-    rootPtr = placeNode(rootPtr, newNodePtr);                                   //balancedAdd(rootPtr, newNodePtr);
+    rootPtr = placeNode(rootPtr, newNodePtr);
     return true;
 }
 
@@ -206,7 +206,7 @@ void BinarySearchTree<ItemType>::clear()
 }
 
 template<class ItemType>
-ItemType BinarySearchTree<ItemType>::getEntry(const ItemType& anEntry) const throw(NotFoundException)   // CONTINUE WITH getEntry() DEFINITION HERE //
+ItemType BinarySearchTree<ItemType>::getEntry(const ItemType& anEntry) const throw(NotFoundException)
 {
     bool isSuccessful = false;
     auto binaryNodePtr = findNode(rootPtr, anEntry, isSuccessful);
@@ -242,13 +242,3 @@ void BinarySearchTree<ItemType>::postorderTraverse(void visit(ItemType&)) const
 {
     this->postorder(visit, rootPtr);
 }
-/*
-template<class ItemType>
-BinarySearchTree& BinarySearchTree<ItemType>::operator=(const BinarySearchTree& rightHandSide)      //Defined right?
-{
-    if (!isEmpty())
-        clear();
-    this = copyTree(&rightHandSide);
-    return *this;
-}
-*/
